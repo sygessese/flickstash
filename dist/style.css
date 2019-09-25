@@ -1,3 +1,9 @@
 body {
-    margin-top: 5%;
+  margin-top: 5%;
+}
+
+.container.movie-container {
+  margin-top: 10%;
+  width: 70%;
+  margin-left: 0;
 }
