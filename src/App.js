@@ -19,11 +19,14 @@ class App extends React.Component {
         {title: 'Sunshine', watched: false},
         {title: 'Ex Machina', watched: true},
       ],
-      searchFilter: ''
+      searchFilter: '',
+      viewType: 'all'
     }
     this.updateSearchFilter = this.updateSearchFilter.bind(this);
     this.addMovie = this.addMovie.bind(this);
     this.updateViewStatus = this.updateViewStatus.bind(this);
+    this.updateViewType = this.updateViewType.bind(this);
+
   }
 
   updateSearchFilter(query) {
@@ -46,6 +49,13 @@ class App extends React.Component {
     this.setState({movies}, console.log(this.state));
   }
 
+  updateViewType (view) {
+    var newView = this.state.viewType === view ? 'all' : view;
+    this.setState({
+      viewType: newView
+    }, console.log(this.state.viewType))
+  }
+
   render() {
     return (
       <div className="jumbotron">
@@ -55,12 +65,15 @@ class App extends React.Component {
         </div>
         <div className="input-group mb-3">
           <div className="input-group-prepend" id="button-addon3">
-            <Watched />
-            <ToWatch />
+            <Watched updateViewType={this.updateViewType} />
+            <ToWatch updateViewType={this.updateViewType} />
           </div>
           <Search updateSearchFilter={this.updateSearchFilter} />
         </div>
-        <Movies movies={this.state.movies} searchFilter={this.state.searchFilter} updateViewStatus={this.updateViewStatus}/>
+        <Movies movies={this.state.movies} 
+                searchFilter={this.state.searchFilter} 
+                updateViewStatus={this.updateViewStatus} 
+                viewType={this.state.viewType} />
       </div>
     )
   }

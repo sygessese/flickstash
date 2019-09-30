@@ -3,7 +3,20 @@ import Movie from './Movie.js';
 
 class Movies extends React.Component {
   render () {
-    var filteredMovies = this.props.movies.filter((movie)=>{
+
+    // viewtype = all, watched, not watched
+    var movies = this.props.movies;
+    if (this.props.viewType === "watched") {
+      movies = movies.filter((movie)=>{
+        return movie['watched'];
+      })
+    } else if (this.props.viewType === "not watched") {
+      movies = movies.filter((movie)=>{
+        return !(movie['watched']);
+      })
+    }
+
+    var filteredMovies = movies.filter((movie)=>{
       let movieLowerCase = movie['title'].toLowerCase();
       let searchLowerCase = this.props.searchFilter.toLowerCase();
       return movieLowerCase.includes(searchLowerCase);
@@ -22,13 +35,13 @@ class Movies extends React.Component {
         </ul>
       )
     }
+
   }
 }
 
 export default Movies;
 
-// {props.movies.map((movie, index) => 
-//   <Movie key={index} movieTitle={movie['title']}/>
-// )}
 
-// filter array of movies by searchterm, if array.length = 0, display 'none', else map
+// if viewtype = all, display all
+// if viewtype = watched, display only true
+// if viewtype = not watched, display only false
