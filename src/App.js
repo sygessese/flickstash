@@ -3,6 +3,9 @@ import Search from './Search.js';
 import Header from './Header.js';
 import Movies from './Movies.js';
 import AddMovie from './AddMovie.js';
+import Watched from './Watched.js';
+import ToWatch from './ToWatch.js';
+
 
 
 class App extends React.Component {
@@ -38,9 +41,15 @@ class App extends React.Component {
     return (
       <div className="jumbotron">
         <Header />
-        <Search updateSearchFilter={this.updateSearchFilter} />
         <AddMovie addMovie={this.addMovie} />
-        <Movies movies={this.state.movies} searchFilter={this.state.searchFilter}/>
+        <div className="big-container container">
+          <div className="row">
+            <Watched />
+            <ToWatch />
+            <Search updateSearchFilter={this.updateSearchFilter} />
+          </div>
+          <Movies movies={this.state.movies} searchFilter={this.state.searchFilter}/>
+        </div>
       </div>
     )
   }
