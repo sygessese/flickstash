@@ -13,11 +13,11 @@ class App extends React.Component {
     super(props);
     this.state = {
       movies: [
-        {title: 'Mean Girls'},
-        {title: 'Hackers'},
-        {title: 'The Grey'},
-        {title: 'Sunshine'},
-        {title: 'Ex Machina'},
+        {title: 'Mean Girls', watched: false},
+        {title: 'Hackers', watched: false},
+        {title: 'The Grey', watched: true},
+        {title: 'Sunshine', watched: false},
+        {title: 'Ex Machina', watched: true},
       ],
       searchFilter: ''
     }
@@ -41,15 +41,17 @@ class App extends React.Component {
     return (
       <div className="jumbotron">
         <Header />
-        <AddMovie addMovie={this.addMovie} />
-        <div className="big-container container">
-          <div className="row">
+        <div className="addMovie">
+          <AddMovie addMovie={this.addMovie}/>
+        </div>
+        <div className="input-group mb-3">
+          <div className="input-group-prepend" id="button-addon3">
             <Watched />
             <ToWatch />
-            <Search updateSearchFilter={this.updateSearchFilter} />
           </div>
-          <Movies movies={this.state.movies} searchFilter={this.state.searchFilter}/>
+          <Search updateSearchFilter={this.updateSearchFilter} />
         </div>
+        <Movies movies={this.state.movies} searchFilter={this.state.searchFilter}/>
       </div>
     )
   }

@@ -15,11 +15,11 @@ class Movies extends React.Component {
       )
     } else {
       return (
-        <div className="container movie-container list-group">
-            {filteredMovies.map((movie, index) => 
-                <Movie key={index} movieTitle={movie['title']}/>
-            )}
-        </div>
+        <ul className="list-group container movie-container">
+          {filteredMovies.map((movie, index) => 
+              <Movie key={index} movieTitle={movie['title']} watched={movie['watched']}/>
+          )}
+        </ul>
       )
     }
   }

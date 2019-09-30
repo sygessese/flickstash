@@ -2,16 +2,21 @@ body {
   margin-top: 5%;
 }
 
-.container.movie-container {
-  margin-top: 0%;
-  width: 70%;
-  margin-left: 0;
+
+.addMovie {
+  margin-bottom: 9%;
 }
 
-.addContainer {
-  margin-bottom: 5%;
+.container.list-group {
+  padding: 0;
 }
 
-.big-container.container {
-  margin: 5%
+.list-group-item:hover {
+  background-color: pink;
+}
+
+.list-group-item {
+  background-color: lightgrey;
+  padding-right: 10%;
+  padding-left: 5%;
 }
