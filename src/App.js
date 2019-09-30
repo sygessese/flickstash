@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Search from './Search.js';
 import Header from './Header.js';
 import Movies from './Movies.js';
+import AddMovie from './AddMovie.js';
 
 
 class App extends React.Component {
@@ -18,6 +19,7 @@ class App extends React.Component {
       searchFilter: ''
     }
     this.updateSearchFilter = this.updateSearchFilter.bind(this);
+    this.addMovie = this.addMovie.bind(this);
   }
 
   updateSearchFilter(query) {
@@ -26,11 +28,18 @@ class App extends React.Component {
     }, ()=>{console.log(this.state)})
   }
 
+  addMovie (newMovie) {
+    this.setState({
+      movies: [...this.state.movies, newMovie]
+    }, ()=>{console.log(this.state)} )
+  }
+
   render() {
     return (
       <div className="jumbotron">
         <Header />
         <Search updateSearchFilter={this.updateSearchFilter} />
+        <AddMovie addMovie={this.addMovie} />
         <Movies movies={this.state.movies} searchFilter={this.state.searchFilter}/>
       </div>
     )
