@@ -23,6 +23,7 @@ class App extends React.Component {
     }
     this.updateSearchFilter = this.updateSearchFilter.bind(this);
     this.addMovie = this.addMovie.bind(this);
+    this.updateViewStatus = this.updateViewStatus.bind(this);
   }
 
   updateSearchFilter(query) {
@@ -35,6 +36,14 @@ class App extends React.Component {
     this.setState({
       movies: [...this.state.movies, newMovie]
     }, ()=>{console.log(this.state)} )
+  }
+
+  updateViewStatus (index) {
+    let movies = [...this.state.movies]; // copy whole array
+    let movie = {...movies[index]}; // destructure single item in array
+    movie['watched'] = !movie['watched'];
+    movies[index] = movie; 
+    this.setState({movies}, console.log(this.state));
   }
 
   render() {
@@ -51,7 +60,7 @@ class App extends React.Component {
           </div>
           <Search updateSearchFilter={this.updateSearchFilter} />
         </div>
-        <Movies movies={this.state.movies} searchFilter={this.state.searchFilter}/>
+        <Movies movies={this.state.movies} searchFilter={this.state.searchFilter} updateViewStatus={this.updateViewStatus}/>
       </div>
     )
   }
