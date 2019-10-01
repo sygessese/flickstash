@@ -6,6 +6,8 @@ import Movies from './Movies.js';
 import AddMovie from './AddMovie.js';
 import Watched from './Watched.js';
 import ToWatch from './ToWatch.js';
+import API from './config/themoviedb.js';
+import $ from 'jquery';
 
 
 
@@ -31,7 +33,14 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-
+    axios.get(`https://api.themoviedb.org/3/movie/top_rated?api_key=${API}&language=en-US&page=1`)
+      .then((res) => {
+        var results = res.data.results.map(({title, overview}) => (
+           {title, overview, watched: false}
+        ))
+        this.setState({ movies: results });
+      })
+      .catch(console.log);
   }
 
   updateSearchFilter(query) {
