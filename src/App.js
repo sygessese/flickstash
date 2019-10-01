@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import Search from './Search.js';
 import Header from './Header.js';
 import Movies from './Movies.js';
@@ -26,6 +27,10 @@ class App extends React.Component {
     this.addMovie = this.addMovie.bind(this);
     this.updateViewStatus = this.updateViewStatus.bind(this);
     this.updateViewType = this.updateViewType.bind(this);
+
+  }
+
+  componentDidMount() {
 
   }
 
