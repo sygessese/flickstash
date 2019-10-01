@@ -65,8 +65,10 @@ class App extends React.Component {
         </div>
         <div className="input-group mb-3">
           <div className="input-group-prepend" id="button-addon3">
-            <Watched updateViewType={this.updateViewType} />
-            <ToWatch updateViewType={this.updateViewType} />
+            <Watched updateViewType={this.updateViewType} 
+                     viewType={this.state.viewType} />
+            <ToWatch updateViewType={this.updateViewType}
+                     viewType={this.state.viewType} />
           </div>
           <Search updateSearchFilter={this.updateSearchFilter} />
         </div>
