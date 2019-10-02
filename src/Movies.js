@@ -3,8 +3,7 @@ import Movie from './Movie.js';
 
 class Movies extends React.Component {
   render () {
-
-    // viewtype = all, watched, not watched
+    console.log('re-rendered');
     var movies = this.props.movies;
     if (this.props.viewType === "watched") {
       movies = movies.filter((movie)=>{
@@ -29,18 +28,26 @@ class Movies extends React.Component {
     } else {
       return (
         <ul className="list-group container movie-container">
-          {filteredMovies.map((movie, index) => 
-              <Movie key={index} index={index} movieTitle={movie['title']} watched={movie['watched']} updateViewStatus={this.props.updateViewStatus}/>
+          {filteredMovies.map((movie, id) => 
+          
+              <Movie key={id} 
+                     index={movie['index']} 
+                     movieTitle={movie['title']} 
+                     watched={movie['watched']} 
+                     overview={movie.overview}
+                     rating={movie['rating']}
+                     year={movie.year}
+                     viewOverview={movie.viewOverview}
+                     updateViewOverview={this.props.updateViewOverview}
+                     updateViewStatus={this.props.updateViewStatus} />
           )}
         </ul>
       )
     }
-
   }
 }
 
 export default Movies;
-
 
 // if viewtype = all, display all
 // if viewtype = watched, display only true

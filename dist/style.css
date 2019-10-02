@@ -2,7 +2,22 @@ body {
   margin-top: 5%;
   width: 700px;
 }
+.movieTitle {
+  font-family: georgia;
+  font-size: 1.3em;
+  margin: 5px;
+}
 
+.movieInfo {
+  font-family: arial;
+  padding: 5px;
+}
+
+.movieRating, .movieYear {
+  font-family: arial;
+  margin-left:5px;
+  margin-bottom: 2px;
+}
 
 .addMovie {
   margin-bottom: 9%;

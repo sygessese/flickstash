@@ -7,21 +7,12 @@ import AddMovie from './AddMovie.js';
 import Watched from './Watched.js';
 import ToWatch from './ToWatch.js';
 import API from './config/themoviedb.js';
-import $ from 'jquery';
-
-
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      movies: [
-        {title: 'Mean Girls', watched: false},
-        {title: 'Hackers', watched: false},
-        {title: 'The Grey', watched: true},
-        {title: 'Sunshine', watched: false},
-        {title: 'Ex Machina', watched: true},
-      ],
+      movies: [],
       searchFilter: '',
       viewType: 'all'
     }
@@ -29,14 +20,15 @@ class App extends React.Component {
     this.addMovie = this.addMovie.bind(this);
     this.updateViewStatus = this.updateViewStatus.bind(this);
     this.updateViewType = this.updateViewType.bind(this);
-
+    this.updateViewOverview = this.updateViewOverview.bind(this);
   }
 
   componentDidMount() {
     axios.get(`https://api.themoviedb.org/3/movie/top_rated?api_key=${API}&language=en-US&page=1`)
       .then((res) => {
-        var results = res.data.results.map(({title, overview}) => (
-           {title, overview, watched: false}
+        console.log(res)
+        var results = res.data.results.map(({title, overview, vote_average, release_date}, index) => (
+           {title, overview, rating: vote_average, year: release_date.slice(0,4), viewOverview: false, watched: false, index: index}
         ))
         this.setState({ movies: results });
       })
@@ -61,6 +53,14 @@ class App extends React.Component {
     movie['watched'] = !movie['watched'];
     movies[index] = movie; 
     this.setState({movies}, console.log(this.state));
+  }
+
+  updateViewOverview (index) {
+    let movies = [...this.state.movies]; // copy whole array
+    let movie = {...movies[index]}; // destructure single item in array
+    movie.viewOverview = !movie.viewOverview;
+    movies[index] = movie; 
+    this.setState({movies}, ()=> {console.log(this.state.movies[index])});
   }
 
   updateViewType (view) {
@@ -89,7 +89,8 @@ class App extends React.Component {
         <Movies movies={this.state.movies} 
                 searchFilter={this.state.searchFilter} 
                 updateViewStatus={this.updateViewStatus} 
-                viewType={this.state.viewType} />
+                viewType={this.state.viewType}
+                updateViewOverview={this.updateViewOverview} />
       </div>
     )
   }
