@@ -4,7 +4,7 @@ const Movie = (props) => {
 
   var watched = props['watched'] ? <span className="badge badge-success" onClick={()=>{props.updateViewStatus(props.index)}}>watched!</span> : <span className="badge badge-warning" onClick={()=>{props.updateViewStatus(props.index)}}> 👀 pick me</span>;
 
-  var styles = props.viewOverview ? {backgroundColor: 'lightgreen'} : {};
+  var styles = props.viewOverview ? {backgroundColor: 'darkseagreen'} : {};
 
   var displayInfo = props.viewOverview ? <span><div className="movieInfo">Overview: {props.overview}</div><div className="movieYear">Year: {props.year}</div><div className="movieRating">Rating: {props.rating}</div></span> : <span></span>;
 

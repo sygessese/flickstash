@@ -24,10 +24,10 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    axios.get(`https://api.themoviedb.org/3/movie/top_rated?api_key=${API}&language=en-US&page=1`)
+    axios.get('http://localhost:3000/api/movies')
       .then((res) => {
         console.log(res)
-        var results = res.data.results.map(({title, overview, vote_average, release_date}, index) => (
+        var results = res.data.results.map(({title, overview, vote_average, release_date}, index)=> (
            {title, overview, rating: vote_average, year: release_date.slice(0,4), viewOverview: false, watched: false, index: index}
         ))
         this.setState({ movies: results });
