@@ -1,6 +1,25 @@
 const express = require('express')
 const app = express()
 const port = 3000
+const Sequelize = require('sequelize')
+const CORS = require('cors');
+
+const sequelize = new Sequelize('movies', 'root', null, {
+    host: 'localhost',
+    dialect: 'mysql'
+  });
+  
+var Movie = sequelize.define('movie', {
+    id: {
+        type: Sequelize.INTEGER,
+        primaryKey: true
+        },
+    title: {
+        type: Sequelize.STRING
+    }
+}, {
+    timestamps: false  
+});
 
 const movieList = {
     "page": 1,
@@ -403,17 +422,36 @@ const movieList = {
     ]
 }
 
-app.use(function (req, res, next) {
-
-    next()
-})
+app.use(CORS());
+//app.use turn them into json things
 
 app.get('/', (req, res) => {
     res.send('Hello World!')
 })
 
-app.get('/api/movies', (req, res) => {
-    res.send(movieList)
+app.use(express.json())
+app.post('/api/movies', (req, res) => {
+    var movie = req.body;
+    console.log(movie);
+    Movie.create(movie)
+        .then(result => {
+            res.send(result);
+        })
+        .catch(err => {
+            console.log(err)
+            res.sendStatus(400)
+        });
 })
+
+app.get('/api/movies', (req, res) => {
+    Movie.findAll()
+        .then((results)=>{
+            res.send(results);  
+        })
+        .catch(err => {
+            console.log(err);
+            res.sendStatus(400)
+        });
+})  
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
