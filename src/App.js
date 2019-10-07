@@ -27,8 +27,8 @@ class App extends React.Component {
     axios.get('http://localhost:3000/api/movies')
       .then((res) => {
         console.log(res)
-        var results = res.data.results.map(({title, overview, vote_average, release_date}, index)=> (
-           {title, overview, rating: vote_average, year: release_date.slice(0,4), viewOverview: false, watched: false, index: index}
+        var results = res.data.map(({ title, overview, vote_average, release_date }, index) => (
+          { title, overview, rating: vote_average, year: release_date.slice(0, 4), viewOverview: false, watched: false, index: index }
         ))
         this.setState({ movies: results });
       })
@@ -38,32 +38,37 @@ class App extends React.Component {
   updateSearchFilter(query) {
     this.setState({
       searchFilter: query
-    }, ()=>{console.log(this.state)})
+    }, () => { console.log(this.state) })
   }
 
-  addMovie (newMovie) {
-    this.setState({
-      movies: [...this.state.movies, newMovie]
-    }, ()=>{console.log(this.state)} )
+  addMovie(newMovie) {
+    axios.post('http://localhost:3000/api/movies', newMovie)
+      .then(success => {
+        this.setState({
+
+          movies: [...this.state.movies, newMovie]
+        }, () => console.log(this.state))
+      })
+      .catch(err => console.log(err))
   }
 
-  updateViewStatus (index) {
+  updateViewStatus(index) {
     let movies = [...this.state.movies]; // copy whole array
-    let movie = {...movies[index]}; // destructure single item in array
+    let movie = { ...movies[index] }; // destructure single item in array
     movie['watched'] = !movie['watched'];
-    movies[index] = movie; 
-    this.setState({movies}, console.log(this.state));
+    movies[index] = movie;
+    this.setState({ movies }, console.log(this.state));
   }
 
-  updateViewOverview (index) {
+  updateViewOverview(index) {
     let movies = [...this.state.movies]; // copy whole array
-    let movie = {...movies[index]}; // destructure single item in array
+    let movie = { ...movies[index] }; // destructure single item in array
     movie.viewOverview = !movie.viewOverview;
-    movies[index] = movie; 
-    this.setState({movies}, ()=> {console.log(this.state.movies[index])});
+    movies[index] = movie;
+    this.setState({ movies }, () => { console.log(this.state.movies[index]) });
   }
 
-  updateViewType (view) {
+  updateViewType(view) {
     var newView = this.state.viewType === view ? 'all' : view;
     this.setState({
       viewType: newView
@@ -75,22 +80,22 @@ class App extends React.Component {
       <div className="jumbotron">
         <Header />
         <div className="addMovie">
-          <AddMovie addMovie={this.addMovie}/>
+          <AddMovie addMovie={this.addMovie} />
         </div>
         <div className="input-group mb-3">
           <div className="input-group-prepend" id="button-addon3">
-            <Watched updateViewType={this.updateViewType} 
-                     viewType={this.state.viewType} />
+            <Watched updateViewType={this.updateViewType}
+              viewType={this.state.viewType} />
             <ToWatch updateViewType={this.updateViewType}
-                     viewType={this.state.viewType} />
+              viewType={this.state.viewType} />
           </div>
           <Search updateSearchFilter={this.updateSearchFilter} />
         </div>
-        <Movies movies={this.state.movies} 
-                searchFilter={this.state.searchFilter} 
-                updateViewStatus={this.updateViewStatus} 
-                viewType={this.state.viewType}
-                updateViewOverview={this.updateViewOverview} />
+        <Movies movies={this.state.movies}
+          searchFilter={this.state.searchFilter}
+          updateViewStatus={this.updateViewStatus}
+          viewType={this.state.viewType}
+          updateViewOverview={this.updateViewOverview} />
       </div>
     )
   }

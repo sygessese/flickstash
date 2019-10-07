@@ -37,3 +37,22 @@ body {
   padding-left: 5%;
 }
 
+.ChooseMovie-holder {
+  height: 250px;
+  display: flex;
+  overflow: hidden;
+  flex-direction: row;
+  margin-left: 7px;
+  margin-top: 7px;
+  margin-bottom: 12px;
+}
+
+.ChooseMovie-info {
+  padding: 5px;
+}
+
+.search-container {
+  height: 280px;
+  overflow: scroll;
+  border: black 2px solid;
+}

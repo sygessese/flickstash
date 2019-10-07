@@ -7,19 +7,28 @@ const CORS = require('cors');
 const sequelize = new Sequelize('movies', 'root', null, {
     host: 'localhost',
     dialect: 'mysql'
-  });
-  
+});
+
 var Movie = sequelize.define('movie', {
     id: {
         type: Sequelize.INTEGER,
         primaryKey: true
-        },
+    },
     title: {
+        type: Sequelize.STRING
+    },
+    overview: {
+        type: Sequelize.TEXT
+    },
+    vote_average: {
+        type: Sequelize.DECIMAL(3, 1)
+    },
+    release_date: {
         type: Sequelize.STRING
     }
 }, {
-    timestamps: false  
-});
+        timestamps: false
+    });
 
 const movieList = {
     "page": 1,
@@ -422,14 +431,25 @@ const movieList = {
     ]
 }
 
+Movie.sync({ force: true }).then(() => { // force: true doesn't 
+    movieList.results.map(movie => { //seed database with initial 20
+        return Movie.create({
+            id: movie['id'],
+            title: movie['title'],
+            overview: movie['overview'],
+            vote_average: movie['vote_average'],
+            release_date: movie['release_date']
+        });
+    })
+});
+
 app.use(CORS());
-//app.use turn them into json things
+app.use(express.json())
 
 app.get('/', (req, res) => {
     res.send('Hello World!')
 })
 
-app.use(express.json())
 app.post('/api/movies', (req, res) => {
     var movie = req.body;
     console.log(movie);
@@ -445,13 +465,13 @@ app.post('/api/movies', (req, res) => {
 
 app.get('/api/movies', (req, res) => {
     Movie.findAll()
-        .then((results)=>{
-            res.send(results);  
+        .then((results) => {
+            res.send(results);
         })
         .catch(err => {
             console.log(err);
             res.sendStatus(400)
         });
-})  
+})
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
