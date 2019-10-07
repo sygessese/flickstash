@@ -2,20 +2,20 @@ import React, { Component } from 'react';
 import Movie from './Movie.js';
 
 class Movies extends React.Component {
-  render () {
+  render() {
     console.log('re-rendered');
     var movies = this.props.movies;
     if (this.props.viewType === "watched") {
-      movies = movies.filter((movie)=>{
+      movies = movies.filter((movie) => {
         return movie['watched'];
       })
     } else if (this.props.viewType === "not watched") {
-      movies = movies.filter((movie)=>{
+      movies = movies.filter((movie) => {
         return !(movie['watched']);
       })
     }
 
-    var filteredMovies = movies.filter((movie)=>{
+    var filteredMovies = movies.filter((movie) => {
       let movieLowerCase = movie['title'].toLowerCase();
       let searchLowerCase = this.props.searchFilter.toLowerCase();
       return movieLowerCase.includes(searchLowerCase);
@@ -28,18 +28,20 @@ class Movies extends React.Component {
     } else {
       return (
         <ul className="list-group container movie-container">
-          {filteredMovies.map((movie, id) => 
-          
-              <Movie key={id} 
-                     index={movie['index']} 
-                     movieTitle={movie['title']} 
-                     watched={movie['watched']} 
-                     overview={movie.overview}
-                     rating={movie['rating']}
-                     year={movie.year}
-                     viewOverview={movie.viewOverview}
-                     updateViewOverview={this.props.updateViewOverview}
-                     updateViewStatus={this.props.updateViewStatus} />
+          {filteredMovies.map((movie, id) =>
+
+            <Movie key={id}
+              index={movie['index']}
+              movieTitle={movie['title']}
+              watched={movie['watched']}
+              overview={movie.overview}
+              rating={movie['rating']}
+              year={movie.year}
+              id={movie['id']}
+              viewOverview={movie.viewOverview}
+              deleteMovie={this.props.deleteMovie}
+              updateViewOverview={this.props.updateViewOverview}
+              updateViewStatus={this.props.updateViewStatus} />
           )}
         </ul>
       )

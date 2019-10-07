@@ -21,35 +21,45 @@ class App extends React.Component {
     this.updateViewStatus = this.updateViewStatus.bind(this);
     this.updateViewType = this.updateViewType.bind(this);
     this.updateViewOverview = this.updateViewOverview.bind(this);
+    this.fetchMovies = this.fetchMovies.bind(this);
+    this.deleteMovie = this.deleteMovie.bind(this);
   }
 
   componentDidMount() {
+    this.fetchMovies()
+  }
+
+  fetchMovies() {
     axios.get('http://localhost:3000/api/movies')
       .then((res) => {
         console.log(res)
-        var results = res.data.map(({ title, overview, vote_average, release_date }, index) => (
-          { title, overview, rating: vote_average, year: release_date.slice(0, 4), viewOverview: false, watched: false, index: index }
+        var results = res.data.map(({ title, overview, vote_average, release_date, id }, index) => (
+          { title, overview, rating: vote_average, year: release_date.slice(0, 4), viewOverview: false, watched: false, index: index, id }
         ))
         this.setState({ movies: results });
       })
       .catch(console.log);
   }
 
+  addMovie(newMovie) {
+    axios.post('http://localhost:3000/api/movies', newMovie)
+      .then(success => {
+        this.fetchMovies();
+      })
+      .catch(err => console.log(err))
+  }
+
+  deleteMovie(movieId) {
+    console.log(movieId)
+    axios.delete('http://localhost:3000/api/movies', { id: movieId })
+      .then(response => console.log(response))
+      .catch(err => console.log(err))
+  }
+
   updateSearchFilter(query) {
     this.setState({
       searchFilter: query
     }, () => { console.log(this.state) })
-  }
-
-  addMovie(newMovie) {
-    axios.post('http://localhost:3000/api/movies', newMovie)
-      .then(success => {
-        this.setState({
-
-          movies: [...this.state.movies, newMovie]
-        }, () => console.log(this.state))
-      })
-      .catch(err => console.log(err))
   }
 
   updateViewStatus(index) {
@@ -95,6 +105,7 @@ class App extends React.Component {
           searchFilter={this.state.searchFilter}
           updateViewStatus={this.updateViewStatus}
           viewType={this.state.viewType}
+          deleteMovie={this.deleteMovie}
           updateViewOverview={this.updateViewOverview} />
       </div>
     )

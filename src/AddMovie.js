@@ -13,12 +13,19 @@ class AddMovie extends React.Component {
             results: [],
             showResults: false
         }
+        this.updateShowResults = this.updateShowResults.bind(this);
+    }
+
+    updateShowResults() {
+        this.setState({
+            showResults: !this.state.showResults
+        })
     }
 
     render() {
 
         var modal = this.state.showResults ? <div className="search-container">{this.state.results.map((movie, index) => {
-            return <ChooseMovie movie={movie} key={index} addMovie={this.props.addMovie} />
+            return <ChooseMovie movie={movie} key={index} addMovie={this.props.addMovie} updateShowResults={this.updateShowResults} />
         })}</div> : <span></span>
 
         return (

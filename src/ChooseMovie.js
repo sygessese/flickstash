@@ -12,6 +12,7 @@ const ChooseMovie = (props) => {
         Year: {props.movie.release_date.slice(0, 4)} <br></br><br></br>
         {props.movie.overview.length > 110 ? (props.movie.overview.slice(0, 110) + "...") : props.movie.overview} <br></br>
         <button className="btn btn-primary btn-sm" onClick={() => {
+          props.updateShowResults();
           props.addMovie({
             id: props.movie.id,
             title: props.movie.title,

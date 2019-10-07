@@ -474,4 +474,17 @@ app.get('/api/movies', (req, res) => {
         });
 })
 
+app.delete('/api/movies', (req, res) => {
+    console.log(req)
+    console.log(req.body)
+    // Movie.delete({where: { id: req.config.data.id }})
+    // .then((result) => {
+    //     res.sendStatus(200);
+    // })
+    // .catch((err) => {
+    //     res.sendStatus(500)
+    // })
+    res.send(200)
+})
+
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
