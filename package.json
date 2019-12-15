@@ -4,7 +4,9 @@
   "description": "Create a movie list application using React.",
   "main": "index.js",
   "scripts": {
-    "start": "webpack -d --watch & live-server ./dist"
+    "start-dev": "webpack -d --watch & live-server ./dist",
+    "build": "NODE_ENV=production webpack",
+    "start": "node server/index.js"
   },
   "repository": {
     "type": "git",

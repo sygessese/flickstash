@@ -3,6 +3,7 @@ const app = express()
 const port = 3000
 const Sequelize = require('sequelize')
 const CORS = require('cors');
+const path = require('path');
 
 const sequelize = new Sequelize('movies', 'root', null, {
     host: 'localhost',
@@ -445,10 +446,12 @@ Movie.sync({ force: true }).then(() => { // force: true doesn't
 
 app.use(CORS());
 app.use(express.json())
+app.use('/', express.static(path.join(__dirname, '../dist')))
+app.use('/bundle', express.static(path.join(__dirname, '../dist/bundle.js')))
 
-app.get('/', (req, res) => {
-    res.send('Hello World!')
-})
+// app.get('/', (req, res) => {
+//     res.send('Hello World!')
+// })
 
 app.post('/api/movies', (req, res) => {
     var movie = req.body;
