@@ -8,7 +8,6 @@ const Movie = (props) => {
 
   var displayInfo = props.viewOverview ? <span><div className="movieInfo">Overview: {props.overview}</div><div className="movieYear">Year: {props.year}</div><div className="movieRating">Rating: {props.rating}</div><div>
     <button onClick={() => {
-      console.log(props.id)
       props.deleteMovie(props.id)
     }}>Delete</button></div></span> : <span></span>;
 

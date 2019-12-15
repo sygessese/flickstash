@@ -51,8 +51,8 @@ class App extends React.Component {
 
   deleteMovie(movieId) {
     console.log(movieId)
-    axios.delete('http://localhost:3000/api/movies', { id: movieId })
-      .then(response => console.log(response))
+    axios.delete('http://localhost:3000/api/movies', { data: { id: movieId } })
+      .then(response => this.fetchMovies())
       .catch(err => console.log(err))
   }
 
