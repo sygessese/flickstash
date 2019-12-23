@@ -10,6 +10,7 @@ const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
     ssl: true
 });
+console.log(process.env)
 pool.connect();
 
 app.use(CORS());

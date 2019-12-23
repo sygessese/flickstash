@@ -6,7 +6,6 @@ import Movies from './Movies.js';
 import AddMovie from './AddMovie.js';
 import Watched from './Watched.js';
 import ToWatch from './ToWatch.js';
-import API from './config/themoviedb.js';
 
 class App extends React.Component {
   constructor(props) {
