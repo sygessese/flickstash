@@ -50,7 +50,7 @@ class App extends React.Component {
   }
 
   updateMovie(movieId, bool) {
-    axios.update('/api/movies', { data: { id: movieId, bool } })
+    axios.put('/api/movies', { data: { id: movieId, bool } })
       .then(success => {
         this.fetchMovies();
       })
