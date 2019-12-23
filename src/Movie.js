@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 const Movie = (props) => {
 
-  var watched = props['watched'] ? <span className="badge badge-success" onClick={() => { props.updateViewStatus(props.index) }}>watched!</span> : <span className="badge badge-warning" onClick={() => { props.updateViewStatus(props.index) }}> 👀 pick me</span>;
+  var watched = props['watched'] ? <span className="badge badge-success" onClick={() => { props.updateMovie(props.id, false) }}>watched!</span> : <span className="badge badge-warning" onClick={() => { props.updateMovie(props.id, true) }}> 👀 pick me</span>;
 
   var styles = props.viewOverview ? { backgroundColor: 'darkseagreen' } : {};
 

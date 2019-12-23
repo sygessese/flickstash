@@ -40,7 +40,7 @@ class Movies extends React.Component {
               id={movie['id']}
               viewOverview={movie.viewOverview}
               deleteMovie={this.props.deleteMovie}
-              updateMove={this.props.updateMovie}
+              updateMovie={this.props.updateMovie}
               updateViewOverview={this.props.updateViewOverview}
               updateViewStatus={this.props.updateViewStatus} />
           )}
