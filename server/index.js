@@ -4,7 +4,6 @@ const app = express()
 const port = process.env.PORT;
 const CORS = require('cors');
 const path = require('path');
-
 const { Pool } = require('pg');
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
@@ -18,8 +17,9 @@ app.use('/bundle', express.static(path.join(__dirname, '../dist/bundle.js')))
 
 app.post('/api/movies', async (req, res) => {
     try {
+        const repl = /'/g;
         var movie = req.body;
-        var query = `insert into Movies (id, title, overview, vote_average, release_date, watched) values (${movie.id},'${movie.title}','${movie.overview}',${movie.vote_average},'${movie.release_date}', 'false');`
+        var query = `insert into Movies (id, title, overview, vote_average, release_date, watched) values (${movie.id},'${movie.title.replace(repl, "''")}','${movie.overview.replace(repl, "''")}',${movie.vote_average},'${movie.release_date}', 'false');`
         console.log(query);
         var client = await pool.connect();
         var result = await client.query(query);
