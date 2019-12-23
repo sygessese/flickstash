@@ -34,10 +34,26 @@ app.post('/api/movies', async (req, res) => {
     }
 })
 
+// add update feature for boolean watched
+// add column in db to accomodate this
+
 app.get('/api/movies', async (req, res) => {
     try {
         var client = await pool.connect()
         var result = await client.query('SELECT * FROM Movies');
+        var results = { 'results': (result) ? result.rows : null };
+        res.send(results);
+    } catch (err) {
+        console.error(err);
+        res.send("Error " + err);
+    }
+})
+
+app.delete('/api/movies', async (req, res) => {
+    try {
+        var client = await pool.connect()
+        var id = req.body.id;
+        var result = await client.query(`delete from Movies where id = ${id}`);
         var results = { 'results': (result) ? result.rows : null };
         res.send(results);
     } catch (err) {
