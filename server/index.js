@@ -1,35 +1,15 @@
 const express = require('express')
 const app = express()
-const port = 3000
-const Sequelize = require('sequelize')
+const port = process.env.PORT;
 const CORS = require('cors');
 const path = require('path');
 
-const sequelize = new Sequelize('movies', 'root', null, {
-    host: 'localhost',
-    dialect: 'mysql'
+const { Pool } = require('pg');
+const pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: true
 });
-
-var Movie = sequelize.define('movie', {
-    id: {
-        type: Sequelize.INTEGER,
-        primaryKey: true
-    },
-    title: {
-        type: Sequelize.STRING
-    },
-    overview: {
-        type: Sequelize.TEXT
-    },
-    vote_average: {
-        type: Sequelize.DECIMAL(3, 1)
-    },
-    release_date: {
-        type: Sequelize.STRING
-    }
-}, {
-        timestamps: false
-    });
+pool.connect();
 
 const movieList = {
     "page": 1,
@@ -432,59 +412,63 @@ const movieList = {
     ]
 }
 
-Movie.sync({ force: true }).then(() => { // force: true doesn't 
-    movieList.results.map(movie => { //seed database with initial 20
-        return Movie.create({
-            id: movie['id'],
-            title: movie['title'],
-            overview: movie['overview'],
-            vote_average: movie['vote_average'],
-            release_date: movie['release_date']
-        });
-    })
-});
+// movieList.results.map(async (movie) => { //seed database with initial 20 
+//     var response = await pool.query(`'INSERT INTO Movies (id, title, overview, vote_average, release_date) VALUES (${movie['id']}, ${movie['title']}, ${movie['overview']}, ${movie['vote_average']}, ${movie['release_date']}`);
+// });
+
 
 app.use(CORS());
 app.use(express.json())
 app.use('/', express.static(path.join(__dirname, '../dist')))
 app.use('/bundle', express.static(path.join(__dirname, '../dist/bundle.js')))
 
-// app.get('/', (req, res) => {
-//     res.send('Hello World!')
+app.post('/api/movies', async (req, res) => {
+    try {
+        const client = await pool.connect()
+        var movie = req.body;
+        console.log(movie);
+        const result = await pool.query(`insert ${movie[0]},'${movie[1]}','${movie[2]}',${movie[3]},'${movie[4]}' into Movies`);
+        const results = { 'results': (result) };
+        res.send(results);
+        client.release();
+    } catch (err) {
+        console.error(err);
+        res.send("Error " + err);
+    }
+})
+
+// app.get('/api/movies', (req, res) => {
+//     Movie.findAll()
+//         .then((results) => {
+//             res.send(results);
+//         })
+//         .catch(err => {
+//             console.log(err);
+//             res.sendStatus(400)
+//         });
 // })
 
-app.post('/api/movies', (req, res) => {
-    var movie = req.body;
-    console.log(movie);
-    Movie.create(movie)
-        .then(result => {
-            res.send(result);
-        })
-        .catch(err => {
-            console.log(err)
-            res.sendStatus(400)
-        });
+app.get('/api/movies', async (req, res) => {
+    try {
+        const client = await pool.connect()
+        const result = await client.query('SELECT * FROM Movies');
+        const results = { 'results': (result) ? result.rows : null };
+        res.send(results);
+        client.release();
+    } catch (err) {
+        console.error(err);
+        res.send("Error " + err);
+    }
 })
 
-app.get('/api/movies', (req, res) => {
-    Movie.findAll()
-        .then((results) => {
-            res.send(results);
-        })
-        .catch(err => {
-            console.log(err);
-            res.sendStatus(400)
-        });
-})
-
-app.delete('/api/movies', (req, res) => {
-    Movie.destroy({ where: { id: req.body.id } })
-        .then((result) => {
-            res.sendStatus(200);
-        })
-        .catch((err) => {
-            res.sendStatus(500)
-        })
-})
+// app.delete('/api/movies', (req, res) => {
+//     Movie.destroy({ where: { id: req.body.id } })
+//         .then((result) => {
+//             res.sendStatus(200);
+//         })
+//         .catch((err) => {
+//             res.sendStatus(500)
+//         })
+// })
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
