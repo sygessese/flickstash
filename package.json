@@ -4,7 +4,6 @@
   "description": "Create a movie list application using React.",
   "main": "index.js",
   "scripts": {
-    "start-dev": "webpack -d --watch & live-server ./dist",
     "build": "NODE_ENV=production webpack",
     "start": "node server/index.js"
   },
@@ -22,12 +21,8 @@
     "bootstrap": "^4.3.1",
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "jquery": "^3.4.1",
-    "live-server": "^1.2.1",
-    "mysql2": "^1.7.0",
-    "nodemon": "^1.19.3",
     "pg": "^7.15.1",
-    "react-bootstrap": "^1.0.0-beta.12",
+    "react-bootstrap": "^1.0.0-beta.12"
   },
   "devDependencies": {
     "@babel/core": "^7.4.5",
