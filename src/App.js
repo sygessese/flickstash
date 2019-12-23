@@ -30,7 +30,7 @@ class App extends React.Component {
   }
 
   fetchMovies() {
-    axios.get('http://localhost:3000/api/movies')
+    axios.get('/api/movies')
       .then((res) => {
         console.log(res)
         var results = res.data.map(({ title, overview, vote_average, release_date, id }, index) => (
@@ -42,7 +42,7 @@ class App extends React.Component {
   }
 
   addMovie(newMovie) {
-    axios.post('http://localhost:3000/api/movies', newMovie)
+    axios.post('/api/movies', newMovie)
       .then(success => {
         this.fetchMovies();
       })
@@ -51,7 +51,7 @@ class App extends React.Component {
 
   deleteMovie(movieId) {
     console.log(movieId)
-    axios.delete('http://localhost:3000/api/movies', { data: { id: movieId } })
+    axios.delete('/api/movies', { data: { id: movieId } })
       .then(response => this.fetchMovies())
       .catch(err => console.log(err))
   }
