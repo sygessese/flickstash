@@ -10,7 +10,6 @@ const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
     ssl: true
 });
-console.log(process.env)
 
 app.use(CORS());
 app.use(express.json())
@@ -22,12 +21,12 @@ app.post('/api/movies', async (req, res) => {
         var movie = req.body;
         var query = `insert into Movies (id, title, overview, vote_average, release_date, watched) values (${movie.id},'${movie.title}','${movie.overview}',${movie.vote_average},'${movie.release_date}', 'false');`
         console.log(query);
-
         var client = await pool.connect();
         var result = await client.query(query);
-        console.log('result:', result)
+        client.release(true)
         var results = { 'results': (result) };
         res.send(results);
+
     } catch (err) {
         console.log("err:", err);
         res.send("Error " + err);
@@ -38,9 +37,8 @@ app.put('/api/movies', async (req, res) => {
     try {
         var client = await pool.connect()
         var query = `update Movies set watched = '${req.body.data.bool}' where id = ${req.body.data.id}`
-        console.log(query)
-        console.log(req)
         var result = await client.query(query);
+        client.release(true)
         var results = { 'results': (result) ? result.rows : null };
         res.send(results);
     } catch (err) {
@@ -54,6 +52,7 @@ app.get('/api/movies', async (req, res) => {
         var client = await pool.connect()
         var result = await client.query('SELECT * FROM Movies');
         var results = { 'results': (result) ? result.rows : null };
+        client.release(true)
         res.send(results);
     } catch (err) {
         console.error(err);
@@ -67,6 +66,7 @@ app.delete('/api/movies', async (req, res) => {
         var id = req.body.id;
         var result = await client.query(`delete from Movies where id = ${id}`);
         var results = { 'results': (result) ? result.rows : null };
+        client.release(true)
         res.send(results);
     } catch (err) {
         console.error(err);
