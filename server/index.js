@@ -23,7 +23,7 @@ app.post('/api/movies', async (req, res) => {
         console.log(movie);
         var query = `insert into Movies (id, title, overview, vote_average, release_date) values (${movie[0]},'${movie[1]}','${movie[2]}',${movie[3]},'${movie[4]}');`
         var client = await pool.connect();
-        var result = await pool.query(query);
+        var result = await client.query(query);
         console.log('result:', result)
         var results = { 'results': (result) };
         res.send(results);
