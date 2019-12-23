@@ -34,8 +34,19 @@ app.post('/api/movies', async (req, res) => {
     }
 })
 
-// add update feature for boolean watched
-// add column in db to accomodate this
+app.put('/api/movies', async (req, res) => {
+    try {
+        var client = await pool.connect()
+        var id = req.body.id;
+        var bool = req.body.bool;
+        var result = await client.query(`update Movies set watched = '${bool}' where id = ${id}`);
+        var results = { 'results': (result) ? result.rows : null };
+        res.send(results);
+    } catch (err) {
+        console.error(err);
+        res.send("Error " + err);
+    }
+})
 
 app.get('/api/movies', async (req, res) => {
     try {
@@ -61,15 +72,5 @@ app.delete('/api/movies', async (req, res) => {
         res.send("Error " + err);
     }
 })
-
-// app.delete('/api/movies', (req, res) => {
-//     Movie.destroy({ where: { id: req.body.id } })
-//         .then((result) => {
-//             res.sendStatus(200);
-//         })
-//         .catch((err) => {
-//             res.sendStatus(500)
-//         })
-// })
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
