@@ -20,8 +20,9 @@ app.use('/bundle', express.static(path.join(__dirname, '../dist/bundle.js')))
 app.post('/api/movies', async (req, res) => {
     try {
         var movie = req.body;
-        console.log(movie);
-        var query = `insert into Movies (id, title, overview, vote_average, release_date) values (${movie[0]},'${movie[1]}','${movie[2]}',${movie[3]},'${movie[4]}');`
+        var query = `insert into Movies (id, title, overview, vote_average, release_date) values (${movie.id},'${movie.title}','${movie.overview}',${movie.vote_average},'${movie.release_date}');`
+        console.log(query);
+
         var client = await pool.connect();
         var result = await client.query(query);
         console.log('result:', result)
@@ -32,17 +33,6 @@ app.post('/api/movies', async (req, res) => {
         res.send("Error " + err);
     }
 })
-
-// app.get('/api/movies', (req, res) => {
-//     Movie.findAll()
-//         .then((results) => {
-//             res.send(results);
-//         })
-//         .catch(err => {
-//             console.log(err);
-//             res.sendStatus(400)
-//         });
-// })
 
 app.get('/api/movies', async (req, res) => {
     try {
