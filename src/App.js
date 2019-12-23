@@ -32,7 +32,7 @@ class App extends React.Component {
     axios.get('/api/movies')
       .then((res) => {
         console.log(res)
-        var results = res.data.map(({ title, overview, vote_average, release_date, id }, index) => (
+        var results = res.data.results.map(({ title, overview, vote_average, release_date, id }, index) => (
           { title, overview, rating: vote_average, year: release_date.slice(0, 4), viewOverview: false, watched: false, index: index, id }
         ))
         this.setState({ movies: results });
