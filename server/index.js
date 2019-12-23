@@ -11,7 +11,6 @@ const pool = new Pool({
     ssl: true
 });
 console.log(process.env)
-pool.connect();
 
 app.use(CORS());
 app.use(express.json())
@@ -22,9 +21,11 @@ app.post('/api/movies', async (req, res) => {
     try {
         var movie = req.body;
         console.log(movie);
-        const result = await pool.query(`insert ${movie[0]},${movie[1]},${movie[2]},${movie[3]},${movie[4]} into Movies`);
+        var query = `insert into Movies (id, title, overview, vote_average, release_date) values (${movie[0]},'${movie[1]}','${movie[2]}',${movie[3]},'${movie[4]}');`
+        var client = await pool.connect();
+        var result = await pool.query(query);
         console.log('result:', result)
-        const results = { 'results': (result) };
+        var results = { 'results': (result) };
         res.send(results);
     } catch (err) {
         console.log("err:", err);
@@ -45,9 +46,9 @@ app.post('/api/movies', async (req, res) => {
 
 app.get('/api/movies', async (req, res) => {
     try {
-        const client = await pool.connect()
-        const result = await client.query('SELECT * FROM Movies');
-        const results = { 'results': (result) ? result.rows : null };
+        var client = await pool.connect()
+        var result = await client.query('SELECT * FROM Movies');
+        var results = { 'results': (result) ? result.rows : null };
         res.send(results);
     } catch (err) {
         console.error(err);
