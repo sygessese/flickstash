@@ -17,6 +17,7 @@ class App extends React.Component {
     }
     this.updateSearchFilter = this.updateSearchFilter.bind(this);
     this.addMovie = this.addMovie.bind(this);
+    this.updateMovie = this.updateMovie.bind(this);
     this.updateViewStatus = this.updateViewStatus.bind(this);
     this.updateViewType = this.updateViewType.bind(this);
     this.updateViewOverview = this.updateViewOverview.bind(this);
@@ -32,8 +33,8 @@ class App extends React.Component {
     axios.get('/api/movies')
       .then((res) => {
         console.log(res)
-        var results = res.data.results.map(({ title, overview, vote_average, release_date, id }, index) => (
-          { title, overview, rating: vote_average, year: release_date.slice(0, 4), viewOverview: false, watched: false, index: index, id }
+        var results = res.data.results.map(({ title, overview, vote_average, release_date, id, watched }, index) => (
+          { title, overview, rating: vote_average, year: release_date.slice(0, 4), viewOverview: false, watched, index: index, id }
         ))
         this.setState({ movies: results });
       })
@@ -42,6 +43,14 @@ class App extends React.Component {
 
   addMovie(newMovie) {
     axios.post('/api/movies', newMovie)
+      .then(success => {
+        this.fetchMovies();
+      })
+      .catch(err => console.log(err))
+  }
+
+  updateMovie(movieId, bool) {
+    axios.update('/api/movies', { data: { id: movieId, bool } })
       .then(success => {
         this.fetchMovies();
       })
@@ -105,6 +114,7 @@ class App extends React.Component {
           updateViewStatus={this.updateViewStatus}
           viewType={this.state.viewType}
           deleteMovie={this.deleteMovie}
+          updateMovie={this.updateMovie}
           updateViewOverview={this.updateViewOverview} />
       </div>
     )

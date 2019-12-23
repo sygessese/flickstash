@@ -20,7 +20,7 @@ app.use('/bundle', express.static(path.join(__dirname, '../dist/bundle.js')))
 app.post('/api/movies', async (req, res) => {
     try {
         var movie = req.body;
-        var query = `insert into Movies (id, title, overview, vote_average, release_date) values (${movie.id},'${movie.title}','${movie.overview}',${movie.vote_average},'${movie.release_date}');`
+        var query = `insert into Movies (id, title, overview, vote_average, release_date, watched) values (${movie.id},'${movie.title}','${movie.overview}',${movie.vote_average},'${movie.release_date}', 'false');`
         console.log(query);
 
         var client = await pool.connect();
