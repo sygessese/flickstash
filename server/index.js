@@ -37,7 +37,7 @@ app.post('/api/movies', async (req, res) => {
 app.put('/api/movies', async (req, res) => {
     try {
         var client = await pool.connect()
-        var query = `update Movies set watched = '${req.body.bool}' where id = ${req.body.id}`
+        var query = `update Movies set watched = '${req.body.data.bool}' where id = ${req.body.data.id}`
         console.log(query)
         console.log(req)
         var result = await client.query(query);
