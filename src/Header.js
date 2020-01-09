@@ -3,10 +3,13 @@ import React, { Component } from 'react';
 const Header = () => {
   return (
     <div>
-    <h1 className="display-4">Movie list!</h1>
-    <p className="lead">This is a simple app with add and search functionality.</p>
-    <hr className="my-4"></hr>
-    <p>Use the add bar to add to your collection, and the search bar below to narrow down to your favorite movies.</p>
+      <h1 className="display-4">Movie list!</h1>
+      <p className="lead">This is a simple app with search and save functionality.</p>
+      <hr className="my-4"></hr>
+      <p>1) Find a movie</p>
+      <p>2) Add it to your personal collection </p>
+      <p>3) Filter your collection by title</p>
+      <p>4) Update when you've watched a movie</p>
     </div>
   )
 }
