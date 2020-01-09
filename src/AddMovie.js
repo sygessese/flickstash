@@ -31,7 +31,7 @@ class AddMovie extends React.Component {
         return (
             <div>
                 <form className="form-inline my-2 my-lg-0" id="addMovie" >
-                    <input className="form-control mr-sm-2" placeholder="Add a movie ..." id="newMovie"
+                    <input className="form-control mr-sm-2" placeholder="Enter a movie title! " id="newMovie"
                         onChange={() => { this.setState({ query: document.getElementById('newMovie').value }) }}>
                     </input>
                     <a className="btn btn-primary btn-sm" href="#" role="button"
@@ -50,7 +50,7 @@ class AddMovie extends React.Component {
 
                                 })
                                 .catch(err => console.log(err))
-                        }}>Add</a>
+                        }}>Find</a>
                 </form>
                 <div>{modal}</div>
             </div>
